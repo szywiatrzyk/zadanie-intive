@@ -13,33 +13,33 @@ MAINAPP =(function(){
 
     let pizzaData;
 
-    InitiateData(url);
+    initiateData(url);
 
 
-    async function GetData(url) {
+    async function getData(url) {
             const response = await fetch(url)
             .then(obj => obj.json());
             return response;
     }
 
-    async function InitiateData(url){
+    async function initiateData(url){
     
-        pizzaData  = await GetData(url); 
-        CreateMenu();
+        pizzaData  = await getData(url); 
+        createMenu();
     }
 
 
-    function CreateMenu(){
+    function createMenu(){
 
         let numOfpizzas = pizzaData.length;
         for(let i = 0;i < numOfpizzas; i++){
            
-            let pizza = MakePizza(pizzaData[i]);
+            let pizza = makePizza(pizzaData[i]);
             pizzasSpace.appendChild(pizza);
         }
     }
 
-    function MakePizza(pizzaInfo){
+    function makePizza(pizzaInfo){
 
         let pizza = document.createElement("div");
         pizza.id =pizzaInfo.id;
@@ -59,35 +59,37 @@ MAINAPP =(function(){
 
         let buttonAdd = document.createElement("button");
         buttonAdd.innerHTML = "zamów";
-        buttonAdd.addEventListener("click", AddToChart);
+        buttonAdd.addEventListener("click", addToChart);
         pizza.appendChild(buttonAdd);
     
         return pizza;
     }
 
 
-    function AddToChart(event){
+    function addToChart(event){
 
-        if(CalculateAmount() > 49){
+        if(calculateAmount() > 49){
             alert("W przypadku zamówień powyżej 50 sztuk prosimy o kontakt telefoniczny");
         
         }
         else{
 
             let currentID = event.target.parentNode.id;
+            
+            const currentChartNode = chart.find(e => e.id === Number(currentID));
 
-            if (chart.find(e => e.id === Number(currentID))) {
-                chart.find(e => e.id === Number(currentID)).amount += 1;
+            if (currentChartNode) {
+                currentChartNode.amount++;
             }
             else{
                 chart.push({id: pizzaData[currentID-1].id, amount:1 });
             }
 
-            RefreshChart();
+            refreshChart();
         }
     }
 
-    function RemoveFromChart(event){
+    function removeFromChart(event){
         let currentID = event.target.id;
 
         let current = chart.find(e => "btnDel" + e.id === currentID);
@@ -102,11 +104,11 @@ MAINAPP =(function(){
             }
 
         }
-        RefreshChart();
+        refreshChart();
 
     }
 
-    function RefreshChart(){
+    function refreshChart(){
 
         let priceSumCount = 0;
 
@@ -143,7 +145,7 @@ MAINAPP =(function(){
 
             chartSpace.appendChild(item);
             
-            document.querySelector("#btnDel" + pizzaData[element.id - 1].id).addEventListener("click",RemoveFromChart);
+            document.querySelector("#btnDel" + pizzaData[element.id - 1].id).addEventListener("click",removeFromChart);
            
 
         });
@@ -151,7 +153,7 @@ MAINAPP =(function(){
         priceSum.innerHTML = "Suma: " + priceSumCount.toFixed(2) + " zł";
     }
 
-    function CalculateAmount(){
+    function calculateAmount(){
         let value =0;
 
         chart.forEach(element =>{
