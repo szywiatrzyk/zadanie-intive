@@ -4,99 +4,60 @@ MAINAPP =(function(){
    
     const pizzasSpace = document.querySelector("#pizzaSpace");
     const chartSpace = document.querySelector("#chartSpace");
-    const price_sum = document.querySelector("#price_sum");
-    const empty_chart_text = document.querySelector("#empty_chart_text");
+    const priceSum = document.querySelector("#priceSum");
+    const emptyChartText = document.querySelector("#emptyChartText");
     
-    price_sum.style.display="none";
+    priceSum.classList.add("hidden");
 
-    const chart =[];
+    const chart = [];
 
-    const data = JSON.parse(GetData(url));
-    CreateMenu();
+    let pizzaData;
+
+    InitiateData(url);
 
 
-    function GetData(url){
-        var request = new XMLHttpRequest();
-        request.open('GET',url,false);
-        request.send(null);
-        if(request.status == 200){
-                console.log('pobrano dane');
-                return request.response;
-        }
-        else{
-            console.log('brak połączenia z serwerem');
-        } 
-     }
+    async function GetData(url) {
+            const response = await fetch(url)
+            .then(obj => obj.json());
+            return response;
+    }
+
+    async function InitiateData(url){
+    
+        pizzaData  = await GetData(url); 
+        CreateMenu();
+    }
+
 
     function CreateMenu(){
 
-        var numOfpizzas = data.length;
-        for(var i=0;i<numOfpizzas;i++){
+        let numOfpizzas = pizzaData.length;
+        for(let i = 0;i < numOfpizzas; i++){
            
-            var pizza = MakePizza(i);
+            let pizza = MakePizza(pizzaData[i]);
             pizzasSpace.appendChild(pizza);
         }
     }
 
+    function MakePizza(pizzaInfo){
 
-    function MakePizza(id){
-
-        var pizza = document.createElement("div");
-        pizza.id =data[id]["id"];
+        let pizza = document.createElement("div");
+        pizza.id =pizzaInfo.id;
         pizza.classList.add("pizza");
 
-        var pizzaImg = document.createElement("div");
-        pizzaImg.classList.add("pizza_img");
+
+        pizza.innerHTML=      
+     `<div class = "pizzaImg">
+        <img src = ${pizzaInfo.image} alt = ${"pizzaImg:" + pizzaInfo.id} class = "imgFit">
+      </div>
+      <div class="pizzaInfo">
+          <div class="pizzaTitle">${pizzaInfo.title}</div>
+          <div class="pizzaIngredients">${pizzaInfo.ingredients}</div>
+          <div class="pizzaPrice">${pizzaInfo.price}</div>
+        </div>`;
         
-        
-        var img = document.createElement("img");
-        img.src = data[id]["image"];
-        img.alt = "pizza_img:" + data[id]["id"];
-        img.classList.add("img_fit");
 
-        pizzaImg.appendChild(img);
-        pizza.appendChild(pizzaImg);
-
-
-        var pizzaInfo =  document.createElement("div");
-        pizzaInfo.classList.add("pizza_info");
-        
-        var pizza_title = document.createElement("div");
-        pizza_title.classList.add("pizza_title");
-        pizza_title.innerHTML = data[id]["title"];
-        pizzaInfo.appendChild(pizza_title);
-
-        var pizza_ingredients = document.createElement("div");
-
-        var pizza_ingredients_array  = data[id]["ingredients"];
-
-
-        var ing="";
-        pizza_ingredients_array.forEach(element => {
-
-            if(ing === ""){
-                ing =element;
-            }
-            else{
-             ing =ing + ", " +element;
-            }
-        });
-        ing=ing.replace("/\n/"," ");
-
-        ing="Składniki:  " + ing;
-
-        pizza_ingredients.innerHTML=  ing;
-        pizza_ingredients.classList.add("pizza_ingredients");
-        pizzaInfo.appendChild(pizza_ingredients);
-
-        var pizza_price = document.createElement("div");
-        pizza_price.classList.add("pizza_price");
-        pizza_price.innerHTML="Cena: " + Number(data[id]["price"]).toFixed(2) + " zł";
-        pizzaInfo.appendChild(pizza_price);
-
-        pizza.appendChild(pizzaInfo);
-
-        var buttonAdd = document.createElement("button");
+        let buttonAdd = document.createElement("button");
         buttonAdd.innerHTML = "zamów";
         buttonAdd.addEventListener("click", AddToChart);
         pizza.appendChild(buttonAdd);
@@ -107,19 +68,19 @@ MAINAPP =(function(){
 
     function AddToChart(event){
 
-        if(CalculateAmount()>49){
+        if(CalculateAmount() > 49){
             alert("W przypadku zamówień powyżej 50 sztuk prosimy o kontakt telefoniczny");
         
         }
         else{
 
-            var currentID = event.target.parentNode.id;
+            let currentID = event.target.parentNode.id;
 
-            if (chart.find(e => e.id == currentID)) {
-                chart.find(e => e.id == currentID).amount +=1;
+            if (chart.find(e => e.id === Number(currentID))) {
+                chart.find(e => e.id === Number(currentID)).amount += 1;
             }
             else{
-                chart.push({id: data[currentID-1]["id"], amount:1 });
+                chart.push({id: pizzaData[currentID-1].id, amount:1 });
             }
 
             RefreshChart();
@@ -127,15 +88,15 @@ MAINAPP =(function(){
     }
 
     function RemoveFromChart(event){
-        var currentID = event.target.pizzaID;
+        let currentID = event.target.id;
 
-        var current = chart.find(e => e.id == currentID);
+        let current = chart.find(e => "btnDel" + e.id === currentID);
 
-        if(current.amount>1){
-            current.amount-=1;
+        if(current.amount > 1){
+            current.amount -= 1;
         }
         else{
-           var index = chart.indexOf(current);
+           let index = chart.indexOf(current);
             if (index > -1) {
                 chart.splice(index, 1);
             }
@@ -147,73 +108,54 @@ MAINAPP =(function(){
 
     function RefreshChart(){
 
-        price_sum_count = 0;
+        let priceSumCount = 0;
 
-
-        while (chartSpace.childNodes.length>2) {
-            chartSpace.removeChild(chartSpace.lastChild);
+        if(chart.length === 0){
+            chartSpace.innerHTML = `<p id="emptyChartText" style="display: block;">Głodny? Zamów naszą pizzę!!!</p>`;
+        }
+        else{
+            chartSpace.innerHTML = "";
         }
     
         if(chart.length > 0){
-            empty_chart_text.style.display="none";
-            price_sum.style.display="block";
+            priceSum.classList.remove("hidden");
         }else{
-            empty_chart_text.style.display="block";
-            price_sum.style.display="none";
+            priceSum.classList.add("hidden");
         }
 
         chart.forEach(element => {
         
-            price_sum_count += element.amount * Number(data[element.id-1]["price"]);
+            priceSumCount += element.amount * Number(pizzaData[element.id - 1].price);
 
-            var item = document.createElement("div");
-            item.classList.add("chart_item");
+            let item = document.createElement("div");
+            item.classList.add("chartItem");
             item.id=element.id;
 
-            var upper_chart_item = document.createElement("div");
-            upper_chart_item.classList.add("chart_item_section");
-
-            var name = document.createElement("p");
-            name.classList.add("chart_item_name")
-            name.innerHTML = data[element.id-1]["title"];
-            upper_chart_item.appendChild(name);
-            
-            var price = document.createElement("p");
-            price.innerHTML = Number(data[element.id-1]["price"]).toFixed(2) + " zł";
-            upper_chart_item.appendChild(price);
-
-            item.appendChild(upper_chart_item);
-
-
-            var lower_chart_item = document.createElement("div");
-            lower_chart_item.classList.add("chart_item_section");
-
-            var amount = document.createElement("div");
-            amount.innerHTML ="Ilość: " + element.amount;
-            
-            lower_chart_item.appendChild(amount);
-           
-
-            var buttonDelete = document.createElement("button");
-            buttonDelete.innerHTML="usuń";
-            buttonDelete.pizzaID = data[element.id-1]["id"];
-            buttonDelete.addEventListener("click",RemoveFromChart);
-            lower_chart_item.appendChild(buttonDelete);
-
-            item.appendChild(lower_chart_item);
+            item.innerHTML = 
+                `<div class="chartItemSection">
+                    <p class="chartItemName">${pizzaData[element.id - 1].title}</p>
+                    <p>${Number(pizzaData[element.id - 1].price).toFixed(2) + " zł"}</p>
+                </div>
+                <div class="chartItemSection">
+                    <div>${"Ilość: " + element.amount}</div>
+                    <button id="${"btnDel" + pizzaData[element.id - 1].id}">usuń</button>
+                </div>`;
 
             chartSpace.appendChild(item);
+            
+            document.querySelector("#btnDel" + pizzaData[element.id - 1].id).addEventListener("click",RemoveFromChart);
+           
 
         });
 
-        price_sum.innerHTML = "Suma: "+ price_sum_count.toFixed(2) + " zł";
+        priceSum.innerHTML = "Suma: " + priceSumCount.toFixed(2) + " zł";
     }
 
     function CalculateAmount(){
-        var value =0;
+        let value =0;
 
         chart.forEach(element =>{
-            value +=element.amount;
+            value += element.amount;
         });
         return value;
     }    

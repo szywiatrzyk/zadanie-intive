@@ -89,7 +89,7 @@ b{
         
     }
 
-    .pizza_blockSpace{
+    .pizzaBlockSpace{
         display: flex;
         flex-wrap:  wrap;
         align-items: center;
@@ -117,7 +117,7 @@ b{
         border-radius: 15px 15px 15px 15px;
     }
     
-    .pizza_img{
+    .pizzaImg{
         width: 250px;
         height: 250px;
         box-sizing: border-box;
@@ -128,7 +128,7 @@ b{
  
     }
 
-    .img_fit{
+    .imgFit{
         width: 100%;
         height: 100%;
         object-fit: cover;
@@ -136,7 +136,7 @@ b{
         border-radius: 15px 15px 15px 15px;
     }
 
-    .pizza_info{
+    .pizzaInfo{
         display: flex;
         width: 100%;
         flex-flow: column;
@@ -145,19 +145,19 @@ b{
         gap: 5px;
     }
 
-    .pizza_title{
+    .pizzaTitle{
         width: 100%;
         font-size: 25px;
         font-weight: bold;
 
     }
 
-    .pizza_ingredients{
+    .pizzaTngredients{
         width: 100%;
         display: flex;
     }
 
-    .pizza_price{
+    .pizzaPrice{
         width: 100%;
         display: flex;
         font-weight: bold;
@@ -171,7 +171,7 @@ b{
         border-radius: 15px 15px 15px 15px;
     }
 
-    .chart_blockSpace{
+    .chartBlockSpace{
         display: flex;
         flex-direction: column;
         overflow-y: scroll;
@@ -182,7 +182,7 @@ b{
     }
 
 
-    .chart_item{
+    .chartItem{
         display: flex;
         flex-direction: column;
         width: 100%;
@@ -195,18 +195,18 @@ b{
         border-radius: 15px 15px 15px 15px;
     }
     
-    .chart_item_name{
+    .chartItemName{
         font-weight: bold;
         font-size: 18px;
     }
 
-    .chart_item_section{
+    .chartItemSection{
         display: flex;
         justify-content: space-between;
         align-items: center;
     }
 
-    .menu_bottom{
+    .menuBottom{
         display: flex;
         align-items: center;
         justify-content: center;
@@ -234,7 +234,7 @@ b{
         text-decoration:none;
     }
 
-    #empty_chart_text{
+    #emptyChartText{
         font-size: 18px;
         font-weight: bold;
     }
@@ -256,7 +256,10 @@ b{
       border-radius: 15px 15px 15px 15px;
   }
 
-
+    .hidden{
+        display: none;
+        visibility: hidden;
+    }
 
   ::-webkit-scrollbar{
     width: 4px;
