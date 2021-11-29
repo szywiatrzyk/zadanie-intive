@@ -1,0 +1,283 @@
+:root {
+    --green_dark: #426A5A;
+    --green: #7FB685;
+    --red: #CA054D;
+    --orange:#f2b880;
+    --text_white:#ffffff;
+  }
+
+
+html, body {
+    width: 100%;
+    height: 100%;
+    font-size: 18px;
+    background-color: var(--orange);
+    font-family: 'Open Sans', sans-serif;
+}
+
+b{
+    font-weight: bold;
+}
+
+.container{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center; 
+    
+}
+  .page{
+   
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+    padding: 50px 50px;
+    max-width: 1500px;
+    min-height: 800px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    flex-flow: column;
+  }
+
+  header{
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      background-color: var(--red);
+      height: 300px;
+
+      border: 8px ridge var(--red);
+      border-radius: 15px 15px 15px 15px;
+
+
+  }
+
+
+
+  .content{
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-flow: row;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
+      flex-grow: 1;
+      margin: 20px 0px;
+    }
+
+    .menu{
+        background-color: var(--green);
+        width: 80%;
+        border: 8px solid var(--green_dark);
+        border-radius: 15px 15px 15px 15px;
+    }
+
+    .title{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        background-color: var(--green_dark);
+        height: 45px;
+        font-size: 30px;
+        font-weight: bold;
+        color: white;
+        
+    }
+
+    .pizzaBlockSpace{
+        display: flex;
+        flex-wrap:  wrap;
+        align-items: center;
+        justify-content: center;
+        overflow-y: scroll;
+        height: 600px;
+        box-sizing: border-box;
+        padding: 10px 0px;
+    }
+
+
+    .pizza{
+        width: 325px;
+        height: 500px;
+        background-color: var(--orange);
+        display: flex;
+        flex-flow: column;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        box-sizing: border-box;
+        padding: 25px 15px;
+        margin: 5px 5px;
+        border: 8px ridge var(--red);
+        border-radius: 15px 15px 15px 15px;
+    }
+    
+    .pizzaImg{
+        width: 250px;
+        height: 250px;
+        box-sizing: border-box;
+        padding: 10px 10px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+ 
+    }
+
+    .imgFit{
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border: 8px ridge var(--red);
+        border-radius: 15px 15px 15px 15px;
+    }
+
+    .pizzaInfo{
+        display: flex;
+        width: 100%;
+        flex-flow: column;
+        align-items: center;
+        justify-content: flex-start;
+        gap: 5px;
+    }
+
+    .pizzaTitle{
+        width: 100%;
+        font-size: 25px;
+        font-weight: bold;
+
+    }
+
+    .pizzaTngredients{
+        width: 100%;
+        display: flex;
+    }
+
+    .pizzaPrice{
+        width: 100%;
+        display: flex;
+        font-weight: bold;
+        justify-content: flex-end;
+    }
+
+    .chart{
+        background-color: var(--green);
+        width: 25%;
+        border: 8px solid var(--green_dark);
+        border-radius: 15px 15px 15px 15px;
+    }
+
+    .chartBlockSpace{
+        display: flex;
+        flex-direction: column;
+        overflow-y: scroll;
+        height: 600px;
+        box-sizing: border-box;
+        gap: 5px;
+        padding: 5px 5px;
+    }
+
+
+    .chartItem{
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        height: 80px;
+        background-color: var(--orange);
+        gap: 5px;
+        box-sizing: border-box;
+        padding: 5px 5px;
+        border: 8px ridge var(--red);
+        border-radius: 15px 15px 15px 15px;
+    }
+    
+    .chartItemName{
+        font-weight: bold;
+        font-size: 18px;
+    }
+
+    .chartItemSection{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .menuBottom{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 40px;
+        width: 100%;
+        background-color: var(--green_dark);
+        box-sizing: border-box;
+        padding: 5px 5px;
+        color: var(--text_white);
+    }
+
+    button{
+        height: 30px;
+        width: 70px;
+        background-color:var(--red);
+        border-radius:14px;
+        border:1px solid var(--red);
+        display:flex;
+        align-items: center;
+        justify-content: center;
+        cursor:pointer;
+        color:var(--text_white);
+        font-size:15px;
+        padding:8px 23px;
+        text-decoration:none;
+    }
+
+    #emptyChartText{
+        font-size: 18px;
+        font-weight: bold;
+    }
+
+  footer{
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: center;
+      box-sizing: border-box;
+      padding: 30px 30px;
+      width: 100%;
+      gap: 5px;
+      color: var(--text_white);
+      font-size: 20px;
+      background-color: var(--red);
+      height: 200px;
+      border: 8px ridge var(--red);
+      border-radius: 15px 15px 15px 15px;
+  }
+
+    .hidden{
+        display: none;
+        visibility: hidden;
+    }
+
+  ::-webkit-scrollbar{
+    width: 4px;
+    height: 4px;
+    }
+    ::-webkit-scrollbar-thumb{
+    background: var(--green_dark);
+    border-radius: 0px;
+    }
+    ::-webkit-scrollbar-thumb:hover{
+    background: #878587;
+    }
+    ::-webkit-scrollbar-track{
+    background: var(--green);
+    border-radius: 0px;
+    box-shadow: inset 0px 0px 0px 0px #F0F0F0;
+    }
+
+  header,  .content, footer {
+    flex-shrink: 0;
+  }
