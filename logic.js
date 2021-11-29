@@ -3,9 +3,9 @@ MAINAPP =(function(){
     const url ="https://raw.githubusercontent.com/alexsimkovich/patronage/main/api/data.json"
    
     const pizzasSpace = document.querySelector("#pizzaSpace");
-    const chartSpace = document.querySelector("#chartSpace");
     const priceSum = document.querySelector("#priceSum");
-    const emptyChartText = document.querySelector("#emptyChartText");
+    const emptyChart = document.querySelector("#emptyChart");
+    const productList = document.querySelector("#productList");
     
     priceSum.classList.add("hidden");
 
@@ -31,20 +31,21 @@ MAINAPP =(function(){
 
     function createMenu(){
 
-        let numOfpizzas = pizzaData.length;
+        const numOfpizzas = pizzaData.length;
         for(let i = 0;i < numOfpizzas; i++){
            
-            let pizza = makePizza(pizzaData[i]);
+            const pizza = makePizza(pizzaData[i]);
             pizzasSpace.appendChild(pizza);
         }
     }
 
     function makePizza(pizzaInfo){
 
-        let pizza = document.createElement("div");
+        const pizza = document.createElement("div");
         pizza.id =pizzaInfo.id;
         pizza.classList.add("pizza");
 
+        const ingStr = pizzaInfo.ingredients.join(", ").replace("/\n/"," ");
 
         pizza.innerHTML=      
      `<div class = "pizzaImg">
@@ -52,12 +53,12 @@ MAINAPP =(function(){
       </div>
       <div class="pizzaInfo">
           <div class="pizzaTitle">${pizzaInfo.title}</div>
-          <div class="pizzaIngredients">${pizzaInfo.ingredients}</div>
-          <div class="pizzaPrice">${pizzaInfo.price}</div>
+          <div class="pizzaIngredients">${ingStr}</div>
+          <div class="pizzaPrice">${Number(pizzaInfo.price).toFixed(2) + " zł"}</div>
         </div>`;
         
 
-        let buttonAdd = document.createElement("button");
+        const buttonAdd = document.createElement("button");
         buttonAdd.innerHTML = "zamów";
         buttonAdd.addEventListener("click", addToChart);
         pizza.appendChild(buttonAdd);
@@ -74,7 +75,7 @@ MAINAPP =(function(){
         }
         else{
 
-            let currentID = event.target.parentNode.id;
+            const currentID = event.target.parentNode.id;
             
             const currentChartNode = chart.find(e => e.id === Number(currentID));
 
@@ -90,15 +91,15 @@ MAINAPP =(function(){
     }
 
     function removeFromChart(event){
-        let currentID = event.target.id;
+        const currentID = event.target.id;
 
-        let current = chart.find(e => "btnDel" + e.id === currentID);
+        const current = chart.find(e => "btnDel" + e.id === currentID);
 
         if(current.amount > 1){
             current.amount -= 1;
         }
         else{
-           let index = chart.indexOf(current);
+           const index = chart.indexOf(current);
             if (index > -1) {
                 chart.splice(index, 1);
             }
@@ -112,24 +113,24 @@ MAINAPP =(function(){
 
         let priceSumCount = 0;
 
+        productList.innerHTML = "";
+
         if(chart.length === 0){
-            chartSpace.innerHTML = `<p id="emptyChartText" style="display: block;">Głodny? Zamów naszą pizzę!!!</p>`;
+            emptyChart.classList.remove("hidden");
+            priceSum.classList.add("hidden");
+            console.log("czysci");
         }
         else{
-            chartSpace.innerHTML = "";
-        }
-    
-        if(chart.length > 0){
+            emptyChart.classList.add("hidden"); 
             priceSum.classList.remove("hidden");
-        }else{
-            priceSum.classList.add("hidden");
         }
+
 
         chart.forEach(element => {
         
             priceSumCount += element.amount * Number(pizzaData[element.id - 1].price);
 
-            let item = document.createElement("div");
+            const item = document.createElement("div");
             item.classList.add("chartItem");
             item.id=element.id;
 
@@ -143,7 +144,7 @@ MAINAPP =(function(){
                     <button id="${"btnDel" + pizzaData[element.id - 1].id}">usuń</button>
                 </div>`;
 
-            chartSpace.appendChild(item);
+            productList.appendChild(item);
             
             document.querySelector("#btnDel" + pizzaData[element.id - 1].id).addEventListener("click",removeFromChart);
            
